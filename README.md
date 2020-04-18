@@ -4,7 +4,7 @@ We're in the process of porting the Cadence samples over to Temporal.  These sam
 
 ## temporal-samples
 
-This repository holds samples of workflows and activities written in .NET for the Uber Temporal platform.  These have been tested on Windows and Mac OS/X using Visual Studio.  We'll have you run these workflows against Temporal/Cassandra running locally as a Docker container.
+This repository holds samples of workflows and activities written in .NET for the Temporal platform.  These have been tested on Windows and Mac OS/X using Visual Studio.  We'll have you run these workflows against Temporal/Cassandra running locally as a Docker container.
 
 ### Requirements
 
