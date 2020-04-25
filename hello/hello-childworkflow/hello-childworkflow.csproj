@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Neon.Cadence" Version="2.0.0" />
+    <PackageReference Include="Neon.Temporal" Version="2.0.1-alpha" />
   </ItemGroup>
 
 </Project>

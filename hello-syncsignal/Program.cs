@@ -351,10 +351,10 @@ namespace hello_workflow
         {
             try
             {
-                var settings = new TemporalSettings("temporal://localhost:7933")
+                var settings = new TemporalSettings("localhost:7233")
                 {
-                    DefaultDomain = "test-domain",
-                    CreateDomain  = true
+                    DefaultNamespace = "test-namespace",
+                    CreateNamespace  = true
                 };
 
                 using (var client = await TemporalClient.ConnectAsync(settings))
