@@ -68,7 +68,7 @@ The current Docker on Windows implementation is hack compared to how Docker work
    c. Click **Apply**
 
 4. Create a local file called **temporal.yml** that includes the following Docker stack/compose definition:
-   ```
+```
 version: '3.5'
 
 services:
@@ -93,7 +93,7 @@ services:
       - "8088:8088"
     depends_on:
       - temporal
-   ```
+```
 
 5. Then you can start or stop the Temporal stack via:
    ```
