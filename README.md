@@ -43,12 +43,6 @@ Note that you'll need to enable Hyper-V for Windows because Docker requires it. 
    c. Select **Fixed** in the **DNS Server** section and enter **8.8.8.8** as the server address.
    d. Click **Apply**
 
-6. Open a command window and pull the Docker container image we'll be using host the Temporal service.  This image bundles a recent version of Temporal along with Cassandra making it easy to quickly deploy Temporal locally for development and testing purposes.
-   ```
-   docker pull nkubeio/temporal-dev:latest
-   ```
-   The image is about 500MB so this may take some time to download.
-
 ### Remarks
 
 You may be able to adjust the Docker RAM allocation lower.  We encountered stablity issues with the default 2GB allocation and doubled this to 4GB for our purposes with good results.  There needs to be enough RAM to run the Docker Linux distribution along with the Temporal and Cassandra services.
@@ -73,35 +67,46 @@ The current Docker on Windows implementation is hack compared to how Docker work
    b. Click **Advanced** on the left and then drag the **CPU slider to 4** and the **Memory slider to 4096**
    c. Click **Apply**
 
-4. Open a terminal window and Open a command window and pull the Docker container image we'll be using host the Temporal service. This image bundles a recent version of Temporal along with Cassandra making it easy to quickly deploy Temporal locally for development and testing purposes.
+4. Create a local file called **temporal.yml** that includes the following Docker stack/compose definition:
    ```
-   docker pull nkubeio/temporal-dev:latest
+version: '3.5'
+
+services:
+  cassandra:
+    image: cassandra:3.11
+    ports:
+      - "9042:9042"
+  temporal:
+    image: temporalio/auto-setup:0.21.1
+    ports:
+      - "7233:7233"
+    environment:
+      - "CASSANDRA_SEEDS=cassandra"
+      - "DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development.yaml"
+    depends_on:
+      - cassandra
+  temporal-web:
+    image: temporalio/web:0.21.1
+    environment:
+      - "TEMPORAL_GRPC_ENDPOINT=temporal:7233"
+    ports:
+      - "8088:8088"
+    depends_on:
+      - temporal
    ```
-   The image is about 500MB so this may take some time to download.
 
-## Temporal Docker image: nkubeio/temporal-dev
+5. Then you can start or stop the Temporal stack via:
+   ```
+# Start the Temporal stack:
 
-We've published the [nkubeio/temporal-dev](https://hub.docker.com/repository/docker/nkubeio/temporal-dev) Docker image to be an easy way to spin up a fully functional Temporal server including the Temporal UX portal and a dedicated Cassandra databaser server node.
+docker stack deploy -c temporal.yml temporal-dev
 
-This container is very easy to manually manage from the command line:
-```
-# This command starts a temporal container named: temporal
-#
-# The container will listen on all workstation network interfaces using 
-# the standard Temporal and Cassandra ports:
-#
-#       Temporal:   7933,7934,7935,7939, 8088 (the portal)
-#       Cassandra: 9042
+# Stop/remove the Temporal stack:
 
-docker run --detach --name temporal-dev -p 7933-7939:7933-7939 -p 8088:8088 nkubeio/temporal-dev:latest
+docker stack rm temporal-dev
+   ```
 
-# This command stops and removes the Temporal container.  Note that 
-# you'll lose any data persisted to Cassandra:
-
-docker rm --force temporal-dev
-```
-
-Note that it takes Temporal and Cassandra a several seconds to initialize.  Once Temporal has started, you can view its portal via: [http://localhost:8088](http://localhost:8088)
+Note that it takes Temporal and Cassandra a several seconds to initialize.  Once Temporal has started, you can view its web UI via: [http://localhost:8088](http://localhost:8088)
 
 ## TemporalFixture: Easy Temporal unit testing
 
