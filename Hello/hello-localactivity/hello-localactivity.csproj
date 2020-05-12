@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <RootNamespace>hello_workflow</RootNamespace>
+    <RootNamespace>hello_localactivity</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
