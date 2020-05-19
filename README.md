@@ -95,18 +95,20 @@ services:
       - temporal
 ```
 
-5. Then you can start or stop the Temporal stack via:
+5. Then you can start or stop Temporal and its related services via:
    ```
-# Start the Temporal stack:
+# Start the Temporal:
 
-docker stack deploy -c temporal.yml temporal-dev
+docker-compose -f docker-compose.yml -p temporal-dev rm -fsv
 
-# Stop/remove the Temporal stack:
+# Stop and remove the Temporal:
 
-docker stack rm temporal-dev
+docker-compose -f docker-compose.yml -p temporal-dev rm -fsv
    ```
 
-Note that it takes Temporal and Cassandra a several seconds to initialize.  Once Temporal has started, you can view its web UI via: [http://localhost:8088](http://localhost:8088)
+**NOTE:** It takes Temporal and Cassandra a several seconds to initialize.  Once Temporal has started, you can view its web UI via: [http://localhost:8088](http://localhost:8088)
+
+**NOTE:** The commands above name the deployed compose service **temporal-dev**.  We recommend that you continue to use this name so that our .NET unit test fixture `TemporalFixture` will be able to automatically bring any deployed test cluster down automatically to avoid port conflicts.
 
 ## TemporalFixture: Easy Temporal unit testing
 
