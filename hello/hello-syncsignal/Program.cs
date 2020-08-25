@@ -353,49 +353,52 @@ namespace hello_workflow
             {
                 var settings = new TemporalSettings("localhost:7233")
                 {
-                    DefaultNamespace = "test-namespace",
-                    CreateNamespace  = true
+                    Namespace       = "test-namespace",
+                    CreateNamespace = true
                 };
 
                 using (var client = await TemporalClient.ConnectAsync(settings))
                 {
-                    await client.RegisterAssemblyAsync(Assembly.GetExecutingAssembly());
-                    await client.StartWorkerAsync(taskList: "hello-tasks");
+                    using (var worker = await client.NewWorkerAsync())
+                    {
+                        await worker.RegisterAssemblyAsync(Assembly.GetExecutingAssembly());
+                        await worker.StartAsync();
 
-                    //-------------------------------------
-                    // Submit an order to: IOrderWorkflow1
+                        //-------------------------------------
+                        // Submit an order to: IOrderWorkflow1
 
-                    var stub1      = client.NewWorkflowStub<IOrderWorkflow1>();
-                    var orderTask1 = stub1.ProcessAsync();
+                        var stub1      = client.NewWorkflowStub<IOrderWorkflow1>();
+                        var orderTask1 = stub1.ProcessAsync();
 
-                    // Attempt to cancel it via a synchronous signal.
+                        // Attempt to cancel it via a synchronous signal.
 
-                    var cancelled1 = await stub1.CancelAsync();
+                        var cancelled1 = await stub1.CancelAsync();
 
-                    // Wait for order processing to complete.  The result will
-                    // be FALSE if the order was cancelled.
+                        // Wait for order processing to complete.  The result will
+                        // be FALSE if the order was cancelled.
 
-                    var result1 = await orderTask1;
+                        var result1 = await orderTask1;
 
-                    //-------------------------------------
-                    // Submit an order to: IOrderWorkflow2
+                        //-------------------------------------
+                        // Submit an order to: IOrderWorkflow2
 
-                    var stub2      = client.NewWorkflowStub<IOrderWorkflow1>();
-                    var orderTask2 = stub2.ProcessAsync();
+                        var stub2 = client.NewWorkflowStub<IOrderWorkflow1>();
+                        var orderTask2 = stub2.ProcessAsync();
 
-                    // Attempt to cancel it via a synchronous signal.
+                        // Attempt to cancel it via a synchronous signal.
 
-                    var cancelled2 = await stub2.CancelAsync();
+                        var cancelled2 = await stub2.CancelAsync();
 
-                    // Wait for order processing to complete.  The result will
-                    // be FALSE if the order was cancelled.
+                        // Wait for order processing to complete.  The result will
+                        // be FALSE if the order was cancelled.
 
-                    var result2 = await orderTask2;
+                        var result2 = await orderTask2;
 
-                    //-------------------------------------
+                        //-------------------------------------
 
-                    Console.WriteLine($"RESULT-1: {result1}");
-                    Console.WriteLine($"RESULT-2: {result2}");
+                        Console.WriteLine($"RESULT-1: {result1}");
+                        Console.WriteLine($"RESULT-2: {result2}");
+                    }
                 }
             }
             catch (ConnectException)

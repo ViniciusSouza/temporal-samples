@@ -90,23 +90,26 @@ namespace hello_workflow
             {
                 var settings = new TemporalSettings("localhost:7233")
                 {
-                    DefaultNamespace = "test-namespace",
-                    CreateNamespace  = true
+                    Namespace       = "test-namespace",
+                    CreateNamespace = true
                 };
 
                 using (var client = await TemporalClient.ConnectAsync(settings))
                 {
-                    await client.RegisterAssemblyAsync(Assembly.GetExecutingAssembly());
-                    await client.StartWorkerAsync(taskList: "hello-tasks");
+                    using (var worker = await client.NewWorkerAsync())
+                    {
+                        await worker.RegisterAssemblyAsync(Assembly.GetExecutingAssembly());
+                        await worker.StartAsync();
 
-                    var stub   = client.NewWorkflowFutureStub<IHelloWorkflow>();
-                    var future = await stub.StartAsync<string>();
+                        var stub = client.NewWorkflowFutureStub<IHelloWorkflow>();
+                        var future = await stub.StartAsync<string>();
 
-                    await stub.SignalAsync("signal-name", "Sally");
+                        await stub.SignalAsync("signal-name", "Sally");
 
-                    var result = await future.GetAsync();
+                        var result = await future.GetAsync();
 
-                    Console.WriteLine($"RESULT: {result}");
+                        Console.WriteLine($"RESULT: {result}");
+                    }
                 }
             }
             catch (ConnectException)
