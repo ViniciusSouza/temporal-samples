@@ -104,7 +104,7 @@ namespace hello_workflow
                         var stub = client.NewWorkflowFutureStub<IHelloWorkflow>();
                         var future = await stub.StartAsync<string>();
 
-                        await stub.SignalAsync("signal-name", "Sally");
+                        await stub.SignalAsync("signal", "Sally");
 
                         var result = await future.GetAsync();
 
