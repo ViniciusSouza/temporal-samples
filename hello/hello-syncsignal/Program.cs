@@ -58,7 +58,7 @@ namespace hello_workflow
     // This implements a contrived order processing workflow with a uses
     // polling and workflow fields to implement a cancellation signal.
 
-    [WorkflowInterface(TaskList = "hello-tasks")]
+    [WorkflowInterface(TaskQueue = "hello-tasks")]
     public interface IOrderWorkflow1 : IWorkflow
     {
         /// <summary>
@@ -180,7 +180,7 @@ namespace hello_workflow
     // a workflow queue to marshal a cancellation signal into the workflow
     // logic.
 
-    [WorkflowInterface(TaskList = "hello-tasks")]
+    [WorkflowInterface(TaskQueue = "hello-tasks")]
     public interface IOrderWorkflow2 : IWorkflow
     {
         /// <summary>
