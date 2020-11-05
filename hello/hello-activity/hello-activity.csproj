@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Neon.Temporal" Version="2.2.0-alpha" />
+    <PackageReference Include="Neon.Temporal" Version="2.6.0-alpha" />
   </ItemGroup>
 
 </Project>
