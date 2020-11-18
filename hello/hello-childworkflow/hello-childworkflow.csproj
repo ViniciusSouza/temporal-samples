@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>hello_childworkflow</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Neon.Temporal" Version="2.6.0-alpha" />
+    <PackageReference Include="Neon.Temporal" Version="2.7.1-alpha" />
   </ItemGroup>
 
 </Project>
