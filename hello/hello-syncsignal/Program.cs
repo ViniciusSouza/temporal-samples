@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------------
 // FILE:	    Main.cs
 // CONTRIBUTOR: Jeff Lill
 // COPYRIGHT:	Copyright (c) 2016-2019 by neonFORGE, LLC.  All rights reserved.
@@ -205,7 +205,7 @@ namespace hello_workflow
     }
 
     [Workflow(AutoRegister = true)]
-    public class OrderWorkflow2 : WorkflowBase, IOrderWorkflow1
+    public class OrderWorkflow2 : WorkflowBase, IOrderWorkflow2
     {
         private enum OrderStatus
         {
@@ -383,7 +383,7 @@ namespace hello_workflow
                         //-------------------------------------
                         // Submit an order to: IOrderWorkflow2
 
-                        var stub2 = client.NewWorkflowStub<IOrderWorkflow1>();
+                        var stub2 = client.NewWorkflowStub<IOrderWorkflow2>();
                         var orderTask2 = stub2.ProcessAsync();
 
                         // Attempt to cancel it via a synchronous signal.
