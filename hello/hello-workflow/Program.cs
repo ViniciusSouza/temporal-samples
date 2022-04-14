@@ -67,7 +67,8 @@ namespace hello_workflow
                 var settings = new TemporalSettings("localhost:7233")
                 {
                     Namespace       = "test-namespace",
-                    CreateNamespace = true
+                    CreateNamespace = true,
+                    TaskQueue       = "hello-tasks"
                 };
 
                 using (var client = await TemporalClient.ConnectAsync(settings))

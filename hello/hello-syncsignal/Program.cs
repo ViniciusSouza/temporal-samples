@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 // FILE:	    Main.cs
 // CONTRIBUTOR: Jeff Lill
 // COPYRIGHT:	Copyright (c) 2016-2019 by neonFORGE, LLC.  All rights reserved.
@@ -354,7 +354,8 @@ namespace hello_workflow
                 var settings = new TemporalSettings("localhost:7233")
                 {
                     Namespace       = "test-namespace",
-                    CreateNamespace = true
+                    CreateNamespace = true,
+                    TaskQueue       = "hello-tasks"
                 };
 
                 using (var client = await TemporalClient.ConnectAsync(settings))
